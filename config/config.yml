@@ -1,0 +1,13 @@
+port: 8000
+
+auth:
+  hash_salt: "hash_salt"
+  signing_key: "signing_key"
+  token_ttl: 86400
+
+mongo:
+  uri: "mongodb://127.0.0.1:27017"
+  name: "myroutine"
+  todo_collection: "todos"
+  user_collection: "users"
+  bookmark_collection: "bookmarks"
