@@ -2,7 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mchayapol/go-todo-app/bookmark"
+	"github.com/mchayapol/go-task-app/bookmark"
 )
 
 func RegisterHTTPEndpoints(router *gin.RouterGroup, uc bookmark.UseCase) {

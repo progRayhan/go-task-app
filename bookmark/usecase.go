@@ -3,7 +3,7 @@ package bookmark
 import (
 	"context"
 
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/models"
 )
 
 type UseCase interface {

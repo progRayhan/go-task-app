@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mchayapol/go-todo-app/bookmark"
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/bookmark"
+	"github.com/mchayapol/go-task-app/models"
 	"github.com/stretchr/testify/assert"
 )
 

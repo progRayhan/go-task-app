@@ -22,7 +22,7 @@ We use MongoDB.
 ```
 $ mongosh
 > use myroutine
-> db.todos.insert({title: "Hello, World!"})
+> db.tasks.insert({title: "Hello, World!"})
 ```	
 
 # Obtain Auth Token
@@ -94,7 +94,7 @@ Creates new bookmark
 ##### Example Input: 
 ```
 {
-	"url": "https://github.com/mchayapol/go-todo-app",
+	"url": "https://github.com/mchayapol/go-task-app",
 	"title": "Go Clean Architecture example"
 } 
 ```
@@ -109,7 +109,7 @@ Returns all user bookmarks
 	"bookmarks": [
             {
                 "id": "5da2d8aae9b63715ddfae856",
-                "url": "https://github.com/mchayapol/go-todo-app",
+                "url": "https://github.com/mchayapol/go-task-app",
                 "title": "Go Clean Architecture example"
             }
     ]
@@ -154,6 +154,18 @@ docker-compose -f mongo-compose.yml up -d
 ```
 go run cmd/api/main.go
 ```
+## Run Automated Tests
+1. Change to the directory containing the test
+2. ```
+go test -v handler_test.go handler.go register.go
+```
+
+or just run in each package, eg auth/delivery/http
+```
+go test -cover
+```
+or
+Visualize coverage in VSCode by running `Go: Test Coverage in Current Package.
 
 ## Run Manual Tests
 1. Sign up
@@ -171,7 +183,7 @@ and obtain token
 
 4. Create a bookmark
 ```
-curl -v -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjIxNzMzMTIuMjI0MDk4LCJ1c2VyIjp7IklEIjoiNjZhNGY1ZjNhZDM5NmRjMzc5NzIzZmVlIiwiVXNlcm5hbWUiOiJtY2hheWFwb2wiLCJQYXNzd29yZCI6ImQwNWY0OTg5YjdkYzc1MTdhOWE2MTVkNDQ0ZmZjOGNmNDZhOTU5NTgifX0.kajEmWh56adozWTLbEucNP3w2C37VKBoJf0J2UnTJ9M" -d '{"url": "https://github.com/mchayapol/go-todo-app","title": "Go Clean Architecture example"}' localhost:8000/api/bookmarks
+curl -v -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjIxNzMzMTIuMjI0MDk4LCJ1c2VyIjp7IklEIjoiNjZhNGY1ZjNhZDM5NmRjMzc5NzIzZmVlIiwiVXNlcm5hbWUiOiJtY2hheWFwb2wiLCJQYXNzd29yZCI6ImQwNWY0OTg5YjdkYzc1MTdhOWE2MTVkNDQ0ZmZjOGNmNDZhOTU5NTgifX0.kajEmWh56adozWTLbEucNP3w2C37VKBoJf0J2UnTJ9M" -d '{"url": "https://github.com/mchayapol/go-task-app","title": "Go Clean Architecture example"}' localhost:8000/api/bookmarks
 ```
 
 5. Get all bookmarks

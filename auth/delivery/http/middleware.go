@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mchayapol/go-todo-app/auth"
+	"github.com/mchayapol/go-task-app/auth"
 )
 
 type AuthMiddleware struct {

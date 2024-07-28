@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/models"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/mchayapol/go-todo-app/config"
-	"github.com/mchayapol/go-todo-app/server"
+	"github.com/mchayapol/go-task-app/config"
+	"github.com/mchayapol/go-task-app/server"
 	"github.com/spf13/viper"
 )
 

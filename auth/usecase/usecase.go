@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/models"
 
 	"github.com/dgrijalva/jwt-go/v4"
-	"github.com/mchayapol/go-todo-app/auth"
+	"github.com/mchayapol/go-task-app/auth"
 )
 
 type AuthClaims struct {

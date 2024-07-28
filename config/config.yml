@@ -8,6 +8,6 @@ auth:
 mongo:
   uri: "mongodb://127.0.0.1:27017"
   name: "myroutine"
-  todo_collection: "todos"
+  task_collection: "tasks"
   user_collection: "users"
   bookmark_collection: "bookmarks"

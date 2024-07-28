@@ -4,23 +4,23 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/models"
-	"github.com/mchayapol/go-todo-app/todo"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/models"
+	"github.com/mchayapol/go-task-app/task"
 )
 
 // Locally defined because we don't want to expose UserID
-type Todo struct {
+type Task struct {
 	ID        string `json:"id"`
 	Title     string `json:"title"`
 	Completed bool   `json:"completed"`
 }
 
 type Handler struct {
-	useCase todo.UseCase
+	useCase task.UseCase
 }
 
-func NewHandler(useCase todo.UseCase) *Handler {
+func NewHandler(useCase task.UseCase) *Handler {
 	return &Handler{
 		useCase: useCase,
 	}
@@ -40,7 +40,7 @@ func (h *Handler) Create(c *gin.Context) {
 
 	user := c.MustGet(auth.CtxUserKey).(*models.User)
 
-	if err := h.useCase.CreateTodo(c.Request.Context(), user, inp.Completed, inp.Title); err != nil {
+	if err := h.useCase.CreateTask(c.Request.Context(), user, inp.Completed, inp.Title); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -49,20 +49,20 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 type getResponse struct {
-	Todos []*Todo `json:"todos"`
+	Tasks []*Task `json:"tasks"`
 }
 
 func (h *Handler) Get(c *gin.Context) {
 	user := c.MustGet(auth.CtxUserKey).(*models.User)
 
-	todoItems, err := h.useCase.GetTodos(c.Request.Context(), user)
+	taskItems, err := h.useCase.GetTasks(c.Request.Context(), user)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
 	c.JSON(http.StatusOK, &getResponse{
-		Todos: toTodos(todoItems),
+		Tasks: toTasks(taskItems),
 	})
 }
 
@@ -79,7 +79,7 @@ func (h *Handler) Delete(c *gin.Context) {
 
 	user := c.MustGet(auth.CtxUserKey).(*models.User)
 
-	if err := h.useCase.DeleteTodo(c.Request.Context(), user, inp.ID); err != nil {
+	if err := h.useCase.DeleteTask(c.Request.Context(), user, inp.ID); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -87,18 +87,18 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func toTodos(bs []*models.Todo) []*Todo {
-	out := make([]*Todo, len(bs))
+func toTasks(bs []*models.Task) []*Task {
+	out := make([]*Task, len(bs))
 
 	for i, b := range bs {
-		out[i] = toTodo(b)
+		out[i] = toTask(b)
 	}
 
 	return out
 }
 
-func toTodo(b *models.Todo) *Todo {
-	return &Todo{
+func toTask(b *models.Task) *Task {
+	return &Task{
 		ID:        b.ID,
 		Title:     b.Title,
 		Completed: b.Completed,

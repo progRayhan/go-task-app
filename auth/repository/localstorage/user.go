@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/models"
 )
 
 type UserLocalStorage struct {

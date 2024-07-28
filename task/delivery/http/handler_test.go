@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/bookmark/usecase"
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/models"
+	"github.com/mchayapol/go-task-app/task/usecase"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,22 +25,22 @@ func TestCreate(t *testing.T) {
 		c.Set(auth.CtxUserKey, testUser)
 	})
 
-	uc := new(usecase.BookmarkUseCaseMock)
+	uc := new(usecase.TaskUseCaseMock)
 
 	RegisterHTTPEndpoints(group, uc)
 
 	inp := &createInput{
-		URL:   "testurl",
-		Title: "testtitle",
+		Completed: false,
+		Title:     "testtitle",
 	}
 
 	body, err := json.Marshal(inp)
 	assert.NoError(t, err)
 
-	uc.On("CreateBookmark", testUser, inp.URL, inp.Title).Return(nil)
+	uc.On("CreateTask", testUser, inp.Completed, inp.Title).Return(nil)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/api/bookmarks", bytes.NewBuffer(body))
+	req, _ := http.NewRequest("POST", "/api/tasks", bytes.NewBuffer(body))
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -57,26 +57,26 @@ func TestGet(t *testing.T) {
 		c.Set(auth.CtxUserKey, testUser)
 	})
 
-	uc := new(usecase.BookmarkUseCaseMock)
+	uc := new(usecase.TaskUseCaseMock)
 
 	RegisterHTTPEndpoints(group, uc)
 
-	bms := make([]*models.Bookmark, 5)
+	taskItems := make([]*models.Task, 5)
 	for i := 0; i < 5; i++ {
-		bms[i] = &models.Bookmark{
-			ID:    "id",
-			URL:   "url",
-			Title: "title",
+		taskItems[i] = &models.Task{
+			ID:        "id",
+			Completed: false,
+			Title:     "title",
 		}
 	}
 
-	uc.On("GetBookmarks", testUser).Return(bms, nil)
+	uc.On("GetTasks", testUser).Return(taskItems, nil)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/api/bookmarks", nil)
+	req, _ := http.NewRequest("GET", "/api/tasks", nil)
 	r.ServeHTTP(w, req)
 
-	expectedOut := &getResponse{Todos: toTodos(bms)}
+	expectedOut := &getResponse{Tasks: toTasks(taskItems)}
 
 	expectedOutBody, err := json.Marshal(expectedOut)
 	assert.NoError(t, err)
@@ -96,7 +96,7 @@ func TestDelete(t *testing.T) {
 		c.Set(auth.CtxUserKey, testUser)
 	})
 
-	uc := new(usecase.BookmarkUseCaseMock)
+	uc := new(usecase.TaskUseCaseMock)
 
 	RegisterHTTPEndpoints(group, uc)
 
@@ -107,10 +107,10 @@ func TestDelete(t *testing.T) {
 	body, err := json.Marshal(inp)
 	assert.NoError(t, err)
 
-	uc.On("DeleteBookmark", testUser, inp.ID).Return(nil)
+	uc.On("DeleteTask", testUser, inp.ID).Return(nil)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("DELETE", "/api/bookmarks", bytes.NewBuffer(body))
+	req, _ := http.NewRequest("DELETE", "/api/tasks", bytes.NewBuffer(body))
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)

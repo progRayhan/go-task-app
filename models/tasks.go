@@ -1,6 +1,6 @@
 package models
 
-type Todo struct {
+type Task struct {
 	ID        string
 	UserID    string
 	Title     string

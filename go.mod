@@ -1,4 +1,4 @@
-module github.com/mchayapol/go-todo-app
+module github.com/mchayapol/go-task-app
 
 go 1.13
 

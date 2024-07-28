@@ -13,20 +13,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/bookmark"
-	"github.com/mchayapol/go-todo-app/todo"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/bookmark"
+	"github.com/mchayapol/go-task-app/task"
 
-	authhttp "github.com/mchayapol/go-todo-app/auth/delivery/http"
-	authmongo "github.com/mchayapol/go-todo-app/auth/repository/mongo"
-	authusecase "github.com/mchayapol/go-todo-app/auth/usecase"
-	bmhttp "github.com/mchayapol/go-todo-app/bookmark/delivery/http"
-	bmmongo "github.com/mchayapol/go-todo-app/bookmark/repository/mongo"
-	bmusecase "github.com/mchayapol/go-todo-app/bookmark/usecase"
+	authhttp "github.com/mchayapol/go-task-app/auth/delivery/http"
+	authmongo "github.com/mchayapol/go-task-app/auth/repository/mongo"
+	authusecase "github.com/mchayapol/go-task-app/auth/usecase"
+	bmhttp "github.com/mchayapol/go-task-app/bookmark/delivery/http"
+	bmmongo "github.com/mchayapol/go-task-app/bookmark/repository/mongo"
+	bmusecase "github.com/mchayapol/go-task-app/bookmark/usecase"
 
-	todohttp "github.com/mchayapol/go-todo-app/todo/delivery/http"
-	todomongo "github.com/mchayapol/go-todo-app/todo/repository/mongo"
-	todousecase "github.com/mchayapol/go-todo-app/todo/usecase"
+	taskhttp "github.com/mchayapol/go-task-app/task/delivery/http"
+	taskmongo "github.com/mchayapol/go-task-app/task/repository/mongo"
+	taskusecase "github.com/mchayapol/go-task-app/task/usecase"
 )
 
 type App struct {
@@ -34,7 +34,7 @@ type App struct {
 
 	bookmarkUC bookmark.UseCase
 	authUC     auth.UseCase
-	todoUC     todo.UseCase
+	taskUC     task.UseCase
 }
 
 func NewApp() *App {
@@ -42,11 +42,11 @@ func NewApp() *App {
 
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
 	bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
-	todoRepo := todomongo.NewTodoRepository(db, viper.GetString("mongo.todo_collection"))
+	taskRepo := taskmongo.NewTaskRepository(db, viper.GetString("mongo.task_collection"))
 
 	return &App{
 		bookmarkUC: bmusecase.NewBookmarkUseCase(bookmarkRepo),
-		todoUC:     todousecase.NewTodoUseCase(todoRepo),
+		taskUC:     taskusecase.NewTaskUseCase(taskRepo),
 		authUC: authusecase.NewAuthUseCase(
 			userRepo,
 			viper.GetString("auth.hash_salt"),
@@ -73,7 +73,7 @@ func (a *App) Run(port string) error {
 	api := router.Group("/api", authMiddleware)
 
 	bmhttp.RegisterHTTPEndpoints(api, a.bookmarkUC)
-	todohttp.RegisterHTTPEndpoints(api, a.todoUC)
+	taskhttp.RegisterHTTPEndpoints(api, a.taskUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mchayapol/go-todo-app/auth"
-	"github.com/mchayapol/go-todo-app/bookmark"
-	"github.com/mchayapol/go-todo-app/models"
+	"github.com/mchayapol/go-task-app/auth"
+	"github.com/mchayapol/go-task-app/bookmark"
+	"github.com/mchayapol/go-task-app/models"
 )
 
 type Bookmark struct {
